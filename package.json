@@ -1,0 +1,25 @@
+{
+  "name": "asserter",
+  "version": "1.0.0",
+  "description": "A tiny assertion lib for both nodejs and the browser.",
+  "main": "assert.js",
+  "scripts": {
+    "test": "nodejs test.js",
+    "dist": "echo TBA",
+    "docs": "echo TBA"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luileito/asserter.git"
+  },
+  "keywords": [
+    "assert",
+    "test"
+  ],
+  "author": "Luis Leiva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luileito/asserter/issues"
+  },
+  "homepage": "https://github.com/luileito/asserter#readme"
+}
