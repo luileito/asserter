@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset=utf-8" />
+    <title>asserter</title>
+  </head>
+  <body>
+    <script src="asserter.js"></script>
+    <script>
+    asserter.test('Equals').equals(1, 1);
+    asserter.test('Not contains string').not().contains('Hi there', 'foo');
+    // Uncomment these lines to see one test at a time.
+    //asserter.display = function() {
+    //  alert([].slice.call(arguments).join(''));
+    //};
+    asserter.run();
+    </script>
+  </body>
+</html>
