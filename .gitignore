@@ -1,0 +1,6 @@
+.*
+*~
+*.min.*
+node_modules
+*.log
+*.bak
