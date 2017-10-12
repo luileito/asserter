@@ -5,7 +5,6 @@
     A tiny assertion lib for both nodejs and the browser.
     @module asserter
     @author Luis Leiva
-    @example
   */
   var asserter = {
     tests: [],

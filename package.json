@@ -5,8 +5,8 @@
   "main": "asserter.js",
   "scripts": {
     "test": "nodejs test.js",
-    "dist": "echo TBA",
-    "docs": "echo TBA"
+    "dist": "if test uglifyjs; then uglifyjs asserter.js > asserter.min.js; fi",
+    "docs": "if test jsdoc; then jsdoc asserter.js -d docs; fi"
   },
   "repository": {
     "type": "git",
