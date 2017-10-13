@@ -67,9 +67,9 @@
     throws: function(fn) {
       try {
         fn();
-        this._set('success', 'error', 'is', this._condition(false));
-      } catch(err) {
-        this._set('success', 'success', 'is', this._condition(true));
+        this._set(new Error, new Error, 'throws', this._condition(false));
+      } catch (err) {
+        this._set(new Error, 'success', 'throws', this._condition(true));
       }
     },
     display: console.log,
@@ -81,8 +81,15 @@
         var label = test.result ? greenBg('PASS') : redBg('FAIL');
         if (!test.result) {
           var reason = test.negated
-            ? sprintf('was NOT expecting %s %s %s', test.reference, test.operator, test.value)
-            : sprintf('was expecting %s %s %s', test.reference, test.operator, test.value);
+            ? sprintf(
+              'was NOT expecting "%s %s %s" (%s %s %s)',
+              test.reference, test.operator, test.value,
+              typeof test.reference, test.operator, typeof test.value
+            )
+            : sprintf('was expecting "%s %s %s" (%s %s %s)',
+              test.reference, test.operator, test.value,
+              typeof test.reference, test.operator, typeof test.value
+            );
           test.message += ' ' + yellow(reason);
           errors++;
         } else {

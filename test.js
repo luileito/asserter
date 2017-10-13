@@ -19,7 +19,7 @@ asserter.test('Not contains string').not().contains('Hi there', 'foo');
 asserter.test('Matches regexp').matches(/^B/, 'Bye');
 asserter.test('Not matches regexp').not().matches(/^Z/, 'Bye');
 
-asserter.test('Throws error').throws(function() {
+asserter.test('Throws error').not().throws(function() {
   throw new Error;
 });
 
