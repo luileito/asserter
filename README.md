@@ -65,5 +65,4 @@ Run `npm run cover` to generate a report in the `coverage` directory (autogenera
 ## License
 
 This libray is released with the [MIT license](LICENSE).
-
 The only requirement is that you keep my copyright notice intact when you repurpose, redistribute, or reuse this code.
