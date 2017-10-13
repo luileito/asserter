@@ -1,3 +1,4 @@
+/* eslint-env browser */
 (function() {
   // Detect env.
   var isNode = typeof module !== 'undefined' && module.exports;
@@ -79,8 +80,8 @@
         var label = test.result ? greenBg('PASS') : redBg('FAIL');
         if (!test.result) {
           var reason = test.negated
-                     ? sprintf('was NOT expecting %s %s %s', test.reference, test.operator, test.value)
-                     : sprintf('was expecting %s %s %s', test.reference, test.operator, test.value);
+            ? sprintf('was NOT expecting %s %s %s', test.reference, test.operator, test.value)
+            : sprintf('was expecting %s %s %s', test.reference, test.operator, test.value);
           test.message += ' ' + yellow(reason);
           errors++;
         } else {
