@@ -19,8 +19,10 @@ asserter.test('Not contains string').not().contains('Hi there', 'foo');
 asserter.test('Matches regexp').matches(/^B/, 'Bye');
 asserter.test('Not matches regexp').not().matches(/^Z/, 'Bye');
 
-asserter.test('Throws error').throws(function() {
-  throw new Error;
-});
+asserter.test('Throws error').throws(function() { throw new Error; });
+asserter.test('Not throws error').not().throws(true);
 
-asserter.run();
+// Export this suite for unit testing & coverage tests.
+if (typeof module !== 'undefined' && require.main !== module) module.exports = asserter;
+// Otherwise, run tests.
+else asserter.run();
