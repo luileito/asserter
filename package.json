@@ -5,8 +5,10 @@
   "main": "asserter.js",
   "scripts": {
     "test": "nodejs test.js",
-    "dist": "if test uglifyjs; then uglifyjs asserter.js > asserter.min.js; fi",
-    "docs": "if test jsdoc; then jsdoc asserter.js -d docs; fi"
+    "lint": "if test \"$(type eslint)\"; then eslint test.js; fi",
+    "dist": "if test \"$(type uglifyjs)\"; then uglifyjs asserter.js > asserter.min.js; fi",
+    "docs": "if test \"$(type jsdoc)\"; then jsdoc asserter.js -d docs; fi",
+    "cover": "if test \"$(type jasmine && type istanbul)\"; then istanbul cover jasmine spec.js; fi"
   },
   "repository": {
     "type": "git",

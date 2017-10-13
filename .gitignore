@@ -1,6 +1,7 @@
 .*
 *~
 *.min.*
+coverage
 node_modules
 out
 docs
