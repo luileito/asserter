@@ -12,7 +12,7 @@ More usage cases coming soon.
 
 ```js
 var asserter = require('asserter');
-asserter.test('Equals').equals(1, 1);
+asserter.test('Equals').equals(1, 2);
 asserter.test('Not contains string').not().contains('Hi there', 'foo');
 asserter.run();
 ```
@@ -26,7 +26,7 @@ Or you can run `npm test` to see it working.
 ```html
 <script src="asserter.js"></script>
 <script>
-asserter.test('Equals').equals(1, 1);
+asserter.test('Equals').equals(1, 2);
 asserter.test('Not contains string').not().contains('Hi there', 'foo');
 asserter.run();
 </script>
