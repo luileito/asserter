@@ -98,6 +98,8 @@
         asserter.display(sprintf('[%s] %s', label, test.message));
       });
       asserter.display(sprintf('\n%s/%s tests passed (%s errors).', successes, successes + errors, errors));
+      // Reset state.
+      this.tests = [];
     },
   };
 
