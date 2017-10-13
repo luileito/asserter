@@ -12,12 +12,18 @@
     tests: [],
     currentTest: null,
     negated: false,
+    /**
+      Define test.
+      @param {string} message Test name.
+      @memberof module:asserter
+      @example asserter.test('Some label').<method>
+    */
     test: function(message) {
       this.currentTest = message;
       this.negated = false;
       return this;
     },
-    _set: function(value, reference, operator, result) {
+    _save: function(value, operator, reference, result) {
       this.tests.push({
         value: value,
         reference: reference,
@@ -28,52 +34,135 @@
       });
       return this;
     },
+    _get: function(what) {
+      if (typeof what === 'function') return what();
+      return what;
+    },
     _condition: function(expr) {
       return !this.negated ? expr : !expr;
     },
+    /**
+      Negate current test.
+      @memberof module:asserter
+      @example asserter.test('Some label').not().<method>;
+    */
     not: function() {
       this.negated = true;
       return this;
     },
-    // BEGIN General-purpose matchers.
+    /**
+      Test if two arguments are equals (truthy).
+      @param {mixed} value Input value.
+      @param {mixed} reference Expected value.
+      @memberof module:asserter
+      @example asserter.test('Some label').equals(arg1, arg2);
+    */
     equals: function(value, reference) {
-      return this._set(value, reference, '==', this._condition(value == reference));
+      var val = this._get(value), ref = this._get(reference);
+      return this._save(val, '==', ref, this._condition(val == ref));
     },
+    /**
+      Test if two arguments are strictly equals.
+      @param {mixed} value Input value.
+      @param {mixed} reference Expected value.
+      @memberof module:asserter
+      @example asserter.test('Some label').strictEquals(arg1, arg2);
+    */
     strictEquals: function(value, reference) {
-      return this._set(value, reference, '===', this._condition(value === reference));
+      var val = this._get(value), ref = this._get(reference);
+      return this._save(val, '===', ref, this._condition(val === ref));
     },
-    // BEGIN Numberical matchers.
+    /**
+      Test if value is greater than reference value.
+      @param {number} value Input value.
+      @param {number} reference Expected value.
+      @memberof module:asserter
+      @example asserter.test('Some label').isGreaterThan(num1, num2);
+    */
     isGreaterThan: function(value, reference) {
-      return this._set(value, reference, '>', this._condition(value > reference));
+      var val = this._get(value), ref = this._get(reference);
+      return this._save(val, '>', ref, this._condition(val > ref));
     },
+    /**
+      Test if value is greater than or equal reference value.
+      @param {number} value Input value.
+      @param {number} reference Expected value.
+      @memberof module:asserter
+      @example asserter.test('Some label').isGreaterThanOrEquals(num1, num2);
+    */
     isGreaterThanOrEquals: function(value, reference) {
-      return this._set(value, reference, '>=', this._condition(value >= reference));
+      var val = this._get(value), ref = this._get(reference);
+      return this._save(val, '>=', ref, this._condition(val >= ref));
     },
+    /**
+      Test if value is less than reference value.
+      @param {number} value Input value.
+      @param {number} reference Expected value.
+      @memberof module:asserter
+      @example asserter.test('Some label').isLessThan(num1, num2);
+    */
     isLessThan: function(value, reference) {
-      return this._set(value, reference, '<', this._condition(value < reference));
+      var val = this._get(value), ref = this._get(reference);
+      return this._save(val, '<', ref, this._condition(val < ref));
     },
+    /**
+      Test if value is less than or equal reference value.
+      @param {number} value Input value.
+      @param {number} reference Expected value.
+      @memberof module:asserter
+      @example asserter.test('Some label').isLessThanOrEquals(num1, num2);
+    */
     isLessThanOrEquals: function(value, reference) {
-      return this._set(value, reference, '<=', this._condition(value <= reference));
+      var val = this._get(value), ref = this._get(reference);
+      return this._save(val, '<=', ref, this._condition(val <= ref));
     },
-    // BEGIN RegExp matchers.
-    matches: function(value, reference) {
-      return this._set(value, reference, 'matches', this._condition(value.test(reference)));
+    /**
+      Test if string matches regexp.
+      @param {RegExp} re Regular expression.
+      @param {str} str String to test the regular expression.
+      @memberof module:asserter
+      @example asserter.test('Some label').matches(/^B/, 'Bye');
+    */
+    matches: function(re, str) {
+      var val = this._get(re), ref = this._get(str);
+      return this._save(val, 'matches', ref, this._condition(val.test(ref)));
     },
-    // BEGIN String matchers.
-    contains: function(value, reference) {
-      return this._set(value, reference, 'contains', this._condition(value.indexOf(reference) > -1));
+    /**
+      Test if string contains substring.
+      @param {str} str Input string.
+      @param {str} sub Expected substring.
+      @memberof module:asserter
+      @example asserter.test('Some label').contains('Hi there', 'Hi');
+    */
+    contains: function(str, sub) {
+      var val = this._get(str), ref = this._get(sub);
+      return this._save(val, 'contains', ref, this._condition(val.indexOf(ref) > -1));
     },
-    // BEGIN Other matchers.
-    throws: function(fn) {
+    /**
+      Test if an error is thrown.
+      @param {mixed} value Input value.
+      @memberof module:asserter
+      @example asserter.test('Some label').throws(function() { throw new Error; });
+    */
+    throws: function(value) {
       try {
-        fn();
-        this._set(new Error, new Error, 'throws', this._condition(false));
+        this._get(value);
+        this._save(new Error, new Error, 'throws', this._condition(false));
       } catch (err) {
-        this._set(new Error, 'success', 'throws', this._condition(true));
+        this._save(new Error, 'success', 'throws', this._condition(true));
       }
     },
+    /**
+      Output method.
+      @method
+      @param {string} str Output message.
+      @memberof module:asserter
+    */
     display: console.log,
-    // Main.
+    /**
+      Run all tests.
+      @memberof module:asserter
+    */
     run: function() {
       var successes = 0;
       var errors = 0;
