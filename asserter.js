@@ -83,19 +83,19 @@
           var reason = test.negated
             ? sprintf(
               'was NOT expecting "%s %s %s" (%s %s %s)',
-              test.reference, test.operator, test.value,
-              typeof test.reference, test.operator, typeof test.value
+              test.value, test.operator, test.reference,
+              typeof test.value, test.operator, typeof test.reference
             )
             : sprintf('was expecting "%s %s %s" (%s %s %s)',
-              test.reference, test.operator, test.value,
-              typeof test.reference, test.operator, typeof test.value
+              test.value, test.operator, test.reference,
+              typeof test.value, test.operator, typeof test.reference
             );
           test.message += ' ' + yellow(reason);
           errors++;
         } else {
           successes++;
         }
-        asserter.display(label, test.message);
+        asserter.display(sprintf('[%s] %s', label, test.message));
       });
       asserter.display(sprintf('\n%s/%s tests passed (%s errors).', successes, successes + errors, errors));
     },
@@ -113,7 +113,7 @@
 
   // Color helpers stuff.
   function colorize(color, msg) {
-    if (!isNode) return sprintf('[%s]', msg);
+    if (!isNode) return msg;
     return color + msg + '\x1b[0m';
   }
   function redBg(msg) {
