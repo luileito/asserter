@@ -39,7 +39,8 @@
       return this;
     },
     _get: function(what) {
-      if (typeof what === 'function') return what();
+      if (typeof what === 'function') what = what();
+      if (typeof what === 'object' && !(what instanceof RegExp)) what = what.toString();
       return what;
     },
     _condition: function(expr) {
