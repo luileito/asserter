@@ -176,7 +176,10 @@
      * @param {string} str Output message.
      * @memberof module:asserter
      */
-    display: console.log,
+    display: function() {
+      console.log.apply(this, arguments);
+      return this;
+    },
     /**
      * Run all tests.
      * @param {string} args Arguments label. Default: `Running tests...`.
