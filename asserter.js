@@ -188,8 +188,8 @@
      * @memberof module:asserter
      */
     run: function() {
-      var args = [].slice.call(arguments, 0);
-      this.display(sprintf.apply(this, args) || 'Running tests...');
+      var msg = sprintf.apply(this, [].slice.call(arguments, 0));
+      if (msg) this.display(msg);
       var successes = 0, errors = 0;
       this.tests.forEach(function(test) {
         var label = test.result ? greenBg('PASS') : redBg('FAIL');
