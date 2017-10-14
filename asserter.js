@@ -155,6 +155,7 @@
       } catch (err) {
         this._save(new Error, 'success', 'throws', this._condition(true));
       }
+      return this;
     },
     /**
      * Output method.
