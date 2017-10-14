@@ -194,6 +194,7 @@
       this.display(sprintf('\n%s/%s tests passed (%s errors).', successes, successes + errors, errors));
       // Reset state.
       this.tests = [];
+      return this;
     },
   };
 
