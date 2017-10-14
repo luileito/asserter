@@ -1,6 +1,7 @@
 /* eslint-env browser */
 (function() {
   'use strict';
+
   // Detect env.
   var isNode = typeof module !== 'undefined' && module.exports;
   /**

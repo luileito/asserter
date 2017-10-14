@@ -5,7 +5,7 @@
   "main": "asserter.js",
   "scripts": {
     "test": "nodejs test.js",
-    "lint": "if test \"$(type eslint)\"; then eslint test.js; fi",
+    "lint": "if test \"$(type eslint)\"; then eslint asserter.js; fi",
     "dist": "if test \"$(type uglifyjs)\"; then uglifyjs asserter.js > asserter.min.js; fi",
     "docs": "if test \"$(type jsdoc)\"; then jsdoc asserter.js -d docs; fi",
     "cover": "if test \"$(type jasmine && type istanbul)\"; then istanbul cover jasmine spec.js; fi"
