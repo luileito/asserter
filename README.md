@@ -1,12 +1,15 @@
 # asserter
 
-A tiny assertion lib with zero dependencies written in isomorphic JavaScript (works for both NodeJS and the browser) that is ES5+ compliant.
+A tiny assertion lib (ES5+ compliant) with zero dependencies and zero configuration.
+Written in isomorphic JavaScript (works for both NodeJS and the browser),
+this software is meant to run quick and dirty unit tests: just load the lib and use it!
 
 The source code is about 200 lines (fully documented), the minified version is just 3 Kb.
 
 ## Minimal working example
 
-More usage cases coming soon.
+A test is defined as `asserter.test('label').<method>`.
+Once you've defined a set of tests, just call `assert.run()` to run all tests.
 
 ### In NodeJS
 
@@ -35,6 +38,97 @@ asserter.run();
 ![Sample output](sample-browser.png?raw=true)
 
 Or you can open `test.html` with your browser to see it working (hit `F12` to open the developer console).
+
+## Supported tests
+
+* `equals(arg1, arg2)`
+Test if two arguments are equal (truthy comparison).
+
+* `strictEquals(arg1, arg2)`
+Test if two arguments are equal (strict comparison).
+
+* `isGreaterThan(arg1, arg2)`
+Test if `arg1` is greater than `arg2`.
+
+* `isGreaterThanOrEquals(arg1, arg2)`
+Test if `arg1` is greater than or equal `arg2`.
+
+* `isLessThan(arg1, arg2)`
+Test if `arg1` is less than `arg2`.
+
+* `isLessThanOrEquals(arg1, arg2)`
+Test if `arg1` is less than or equal `arg2`.
+
+* `matches(re, str)`
+Test if regular expression `re` applies to string `str`.
+
+* `contains(str, sub)`
+Test if string `str` contains string `sub`.
+
+* `throws(arg)`
+Test if `arg` throws an error.
+
+* `not()`
+This will negate the current test result. See examples above or below.
+
+## Features
+
+### Test methods are chainable
+
+```js
+asserter
+.test('Equals').equals(1, 2)
+.test('Not contains string').not().contains('Hi there', 'foo')
+.run()
+```
+
+### Tests can be grouped (poor man's test suites)
+
+```js
+asserter
+// Start test suite.
+.test('Equals 1').equals(1, 1)
+.test('Equals undef').equals(null, undefined)
+.run('Equality tests')
+// Start another test suite.
+.test('Contains string').matches('foo', 'foo')
+.test('Not contains string').not().contains('Hi there', 'foo')
+.run('String tests')
+```
+
+### Run labels have sprintf capability
+
+```js
+asserter
+.test('Equals').isGreaterThan(2, 1)
+.run('Test %s began on %s', 42, new Date)
+```
+
+### Method arguments can be anything
+
+If you pass in *arrays*, they will be casted to strings; e.g., `[1,2]` becomes `'1,2'`.
+```js
+asserter
+.test('Array test').equals([1,2], [1,2])
+.run();
+```
+
+If you pass in *objects*, they will be casted to JSON; e.g., `{foo:1}` becomes `'{"foo":1}'`.
+```js
+asserter
+.test('Object test').equals({foo:1}, {foo:1})
+.run();
+```
+
+If you pass in *functions*, their return values will be tested.
+```js
+asserter
+.test('Function test #1').equals(function() { return 2; }, function() { return 2; })
+.test('Function test #2').equals(2, function() { return 2; })
+.test('Function test #3').equals(function() { return 2; }, 2)
+.test('Should be undefined').equals(function() { return; }, undefined)
+.run();
+```
 
 ## Documentation
 
