@@ -20,7 +20,7 @@
     /**
      * Define test.
      * @param {string} message Test name.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').<method>
      */
@@ -50,7 +50,7 @@
     },
     /**
      * Negate current test.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').not().<method>;
      */
@@ -62,7 +62,7 @@
      * Test if two arguments are equals (truthy).
      * @param {mixed} value Input value.
      * @param {mixed} reference Expected value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').equals(arg1, arg2);
      */
@@ -74,7 +74,7 @@
      * Test if two arguments are strictly equals.
      * @param {mixed} value Input value.
      * @param {mixed} reference Expected value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').strictEquals(arg1, arg2);
      */
@@ -86,7 +86,7 @@
      * Test if value is greater than reference value.
      * @param {number} value Input value.
      * @param {number} reference Expected value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').isGreaterThan(num1, num2);
      */
@@ -98,7 +98,7 @@
      * Test if value is greater than or equal reference value.
      * @param {number} value Input value.
      * @param {number} reference Expected value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').isGreaterThanOrEquals(num1, num2);
      */
@@ -110,7 +110,7 @@
      * Test if value is less than reference value.
      * @param {number} value Input value.
      * @param {number} reference Expected value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').isLessThan(num1, num2);
      */
@@ -122,7 +122,7 @@
      * Test if value is less than or equal reference value.
      * @param {number} value Input value.
      * @param {number} reference Expected value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').isLessThanOrEquals(num1, num2);
      */
@@ -131,10 +131,10 @@
       return this._save(val, '<=', ref, this._condition(val <= ref));
     },
     /**
-     * Test if string matches regexp.
+     * Test if regexp applies to string.
      * @param {RegExp} re Regular expression.
-     * @param {str} str String to test the regular expression.
-     * @return {object} asserter
+     * @param {string} str String to test the regular expression.
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').matches(/^B/, 'Bye');
      */
@@ -144,9 +144,9 @@
     },
     /**
      * Test if string contains substring.
-     * @param {str} str Input string.
-     * @param {str} sub Expected substring.
-     * @return {object} asserter
+     * @param {string} str Input string.
+     * @param {string} sub Expected substring.
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').contains('Hi there', 'Hi');
      */
@@ -157,7 +157,7 @@
     /**
      * Test if an error is thrown.
      * @param {mixed} value Input value.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').throws(function() { throw new Error; });
      */
@@ -184,7 +184,7 @@
      * Run all tests.
      * @param {string} args Arguments label. Default: `Running tests...`.
      * Useful to group tests or indicate the beginning of a test suite.
-     * @return {object} asserter
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      */
     run: function() {
