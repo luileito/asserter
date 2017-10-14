@@ -6,6 +6,10 @@ asserter
 .test('Not equals').not().equals(1, false)
 .test('Strict equals').strictEquals(1, 1)
 .test('Not strict equals').not().strictEquals(1, '1')
+// Watch out: objects will be compared as strings.
+.test('Array equals').equals([1,2], [1,2])
+.test('Object equals').equals({foo:1}, {foo:1})
+.test('Function equals').equals(function(){ return }, function(){ return })
 // Numerical comparisons.
 .test('Greater than').isGreaterThan(1, 0)
 .test('Not greater than').not().isGreaterThan(0, 1)
