@@ -1,26 +1,29 @@
 var asserter = require('./asserter');
 
-asserter.test('Equals').equals(1, true);
-asserter.test('Not equals').not().equals(1, false);
-asserter.test('Strict equals').strictEquals(1, 1);
-asserter.test('Not strict equals').not().strictEquals(1, '1');
-
-asserter.test('Greater than').isGreaterThan(1, 0);
-asserter.test('Not greater than').not().isGreaterThan(0, 1);
-asserter.test('Greater than or equals').isGreaterThanOrEquals(1, 1);
-asserter.test('Not greater than or equals').not().isGreaterThanOrEquals(1, 2);
-asserter.test('Less than').isLessThan(0, 1);
-asserter.test('Not less than').not().isLessThan(1, 0);
-asserter.test('Less than or equals').isLessThanOrEquals(0, 0);
-asserter.test('Not less than or equals').not().isLessThanOrEquals(1, 0);
-
-asserter.test('Contains string').contains('Hi there', 'Hi');
-asserter.test('Not contains string').not().contains('Hi there', 'foo');
-asserter.test('Matches regexp').matches(/^B/, 'Bye');
-asserter.test('Not matches regexp').not().matches(/^Z/, 'Bye');
-
-asserter.test('Throws error').throws(function() { throw new Error; });
-asserter.test('Not throws error').not().throws(true);
+asserter
+// Basic comparisons.
+.test('Equals').equals(1, true)
+.test('Not equals').not().equals(1, false)
+.test('Strict equals').strictEquals(1, 1)
+.test('Not strict equals').not().strictEquals(1, '1')
+// Numerical comparisons.
+.test('Greater than').isGreaterThan(1, 0)
+.test('Not greater than').not().isGreaterThan(0, 1)
+.test('Greater than or equals').isGreaterThanOrEquals(1, 1)
+.test('Not greater than or equals').not().isGreaterThanOrEquals(1, 2)
+.test('Less than').isLessThan(0, 1)
+.test('Not less than').not().isLessThan(1, 0)
+.test('Less than or equals').isLessThanOrEquals(0, 0)
+.test('Not less than or equals').not().isLessThanOrEquals(1, 0)
+// String comparisons.
+.test('Contains string').contains('Hi there', 'Hi')
+.test('Not contains string').not().contains('Hi there', 'foo')
+.test('Matches regexp').matches(/^B/, 'Bye')
+.test('Not matches regexp').not().matches(/^Z/, 'Bye')
+// Error comparisons.
+.test('Throws error').throws(function() { throw new Error; })
+.test('Not throws error').not().throws(true)
+;
 
 // Export this suite for unit testing & coverage tests.
 if (typeof module !== 'undefined' && require.main !== module) module.exports = asserter;
