@@ -40,7 +40,7 @@
     },
     _get: function(what) {
       if (typeof what === 'function') what = what();
-      if (typeof what === 'object' && !(what instanceof RegExp)) what = what.toString();
+      if (what && typeof what === 'object' && !(what instanceof RegExp)) what = what.toString();
       return what;
     },
     _condition: function(expr) {
