@@ -167,9 +167,13 @@
     display: console.log,
     /**
      * Run all tests.
+     * @param {string} args Arguments label. Default: `Running tests...`.
+     * Useful to group tests or indicate the beginning of a test suite.
      * @memberof module:asserter
      */
     run: function() {
+      var args = [].slice.call(arguments, 0);
+      this.display(sprintf.apply(this, args) || 'Running tests...');
       var successes = 0, errors = 0;
       this.tests.forEach(function(test) {
         var label = test.result ? greenBg('PASS') : redBg('FAIL');
