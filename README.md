@@ -6,6 +6,14 @@ this software is meant to run quick and dirty unit tests: just load the lib and 
 
 The source code is about 200 lines (fully documented), the minified version is just 3 Kb.
 
+## Disclaimer
+
+There are many good unit testing libs out there for NodeJS and the browser (and for both environments).
+However, everything I tried so far either works well in NodeJS,
+or needs to inject many external dependencies in the browser,
+or requires complex setups (and most unit tests are not that complex eventually).
+This library simply gets the job done.
+
 ## Minimal working example
 
 A test is defined as `asserter.test('label').<method>`.
