@@ -174,6 +174,7 @@
      * Output method.
      * @method
      * @param {string} str Output message.
+     * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      */
     display: function() {
