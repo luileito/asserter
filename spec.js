@@ -7,8 +7,13 @@ describe('asserter', function() {
   var testSuite = require('./test');
   var hasFailed = (test) => !test.result;
 
+  // Tear down.
+  afterAll(function() {
+    testSuite.run('END');
+  });
+
   it('should pass default tests', function() {
-    // Run default tests.
+    // Inspect default tests.
     expect(testSuite.tests.every(hasFailed)).toBe(false);
   });
 
