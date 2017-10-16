@@ -4,11 +4,11 @@
   "description": "A tiny assertion lib for both nodejs and the browser.",
   "main": "asserter.js",
   "scripts": {
-    "test": "nodejs test.js",
+    "test": "nodejs test/test.js",
     "lint": "eslint asserter.js || echo [sudo] npm i -g eslint",
     "dist": "uglifyjs asserter.js > asserter.min.js || echo [sudo] npm i -g uglifyjs",
     "docs": "jsdoc asserter.js -d docs || echo [sudo] npm i -g jsdoc",
-    "cover": "istanbul cover jasmine spec.js || echo [sudo] npm i -g istanbul jasmine"
+    "cover": "istanbul cover jasmine test/spec.js || echo [sudo] npm i -g istanbul jasmine"
   },
   "repository": {
     "type": "git",

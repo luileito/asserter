@@ -1,4 +1,4 @@
-var asserter = require('./asserter');
+var asserter = require('../asserter');
 
 asserter
 // Basic comparisons.

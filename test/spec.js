@@ -1,8 +1,8 @@
 describe('asserter', function() {
 
-  var asserter = require('./asserter');
+  var asserter = require('../asserter');
   // Suppress output.
-  asserter.display = () => {};
+  asserter.output = () => {};
 
   var testSuite = require('./test');
   var hasFailed = (test) => !test.result;
