@@ -233,7 +233,7 @@
     var str = args.shift();
     args.forEach(function(arg) {
       str = str.replace('%s', arg);
-     });
+    });
     return str;
   }
 
