@@ -3,7 +3,7 @@
 *.min.*
 coverage
 node_modules
-out
+local
 docs
 *.log
 *.bak
