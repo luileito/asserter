@@ -104,11 +104,11 @@ asserter
 .run('String tests')
 ```
 
-### Run labels have sprintf capability
+### Labels have sprintf capability
 
 ```js
 asserter
-.test('Equals').isGreaterThan(2, 1)
+.test('Hi %s', 'there').isGreaterThan(2, 1)
 .run('Test %s began on %s', 42, new Date)
 ```
 

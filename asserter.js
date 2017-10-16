@@ -19,13 +19,14 @@
     negated: false,
     /**
      * Define test.
-     * @param {string} message Test name.
+     * @param {...args} args Test label, with `sprintf` capability.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').<method>
      */
-    test: function(message) {
-      this.currentTest = message;
+    test: function() {
+      var msg = sprintf.apply(this, [].slice.call(arguments));
+      this.currentTest = msg;
       this.negated = false;
       return this;
     },
@@ -173,23 +174,30 @@
     /**
      * Output method.
      * @method
-     * @param {string} str Output message.
+     * @param {...args} args Output message.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      */
     display: function() {
-      console.log.apply(this, arguments);
+      var msg = sprintf.apply(this, [].slice.call(arguments));
+      this.output(msg);
       return this;
     },
     /**
+     * Output transport. Default: `console.log`.
+     * @typeof {function}
+     * @memberof module:asserter
+     */
+    output: console.log,
+    /**
      * Run all tests.
-     * @param {string} args Arguments label. Default: `Running tests...`.
+     * @param {...args} args Suite label, with `sprintf` capability.
      * Useful to group tests or indicate the beginning of a test suite.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      */
     run: function() {
-      var msg = sprintf.apply(this, [].slice.call(arguments, 0));
+      var msg = sprintf.apply(this, [].slice.call(arguments));
       if (msg) this.display(msg);
       var successes = 0, errors = 0;
       this.tests.forEach(function(test) {
@@ -210,9 +218,9 @@
         } else {
           successes++;
         }
-        this.display(sprintf('[%s] %s', label, test.message));
+        this.display('[%s] %s', label, test.message);
       }, this);
-      this.display(sprintf('%s/%s tests passed (%s errors).\n', successes, successes + errors, errors));
+      this.display('%s/%s tests passed (%s errors).\n', successes, successes + errors, errors);
       // Reset state.
       this.tests = [];
       return this;
@@ -225,7 +233,7 @@
     var str = args.shift();
     args.forEach(function(arg) {
       str = str.replace('%s', arg);
-    });
+     });
     return str;
   }
 
