@@ -212,7 +212,7 @@
         }
         this.display(sprintf('[%s] %s', label, test.message));
       }, this);
-      this.display(sprintf('\n%s/%s tests passed (%s errors).', successes, successes + errors, errors));
+      this.display(sprintf('%s/%s tests passed (%s errors).\n', successes, successes + errors, errors));
       // Reset state.
       this.tests = [];
       return this;
