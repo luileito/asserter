@@ -1,31 +1,40 @@
 describe('asserter', function() {
 
-  var asserter = require('../asserter');
-  // Suppress output.
-  asserter.output = () => {};
-
-  var testSuite = require('./test');
   var hasFailed = (test) => !test.result;
 
-  // Tear down.
-  afterAll(function() {
-    testSuite.run('END');
-  });
+  var loadTests = function(module) {
+    var asserter = require('../asserter');
+    // Suppress output.
+    asserter.output = () => {};
 
-  it('should pass default tests', function() {
-    // Inspect default tests.
-    expect(testSuite.tests.every(hasFailed)).toBe(false);
-  });
+    var testSuite = require(module);
 
-  it('should clean tests after run', function() {
-    testSuite.run();
-    expect(testSuite.tests.length).toBe(0);
-  });
+    beforeEach(function() {
+      testSuite.run('BEGIN');
+    });
 
-  it('should fail test', function() {
-    // Force an error.
-    asserter.test('Equals').equals(1, 2);
-    expect(asserter.tests.some(hasFailed)).toBe(true);
-  });
+    afterAll(function() {
+      testSuite.run('END');
+    });
+
+    it('should pass default tests', function() {
+      // Inspect default tests.
+      expect(testSuite.tests.every(hasFailed)).toBe(false);
+    });
+
+    it('should clean tests after run', function() {
+      testSuite.run();
+      expect(testSuite.tests.length).toBe(0);
+    });
+
+    it('should fail test', function() {
+      // Force an error.
+      asserter.test('Equals').equals(1, 2);
+      expect(asserter.tests.some(hasFailed)).toBe(true);
+    });
+  }
+
+  describe('suite1', loadTests.bind(this, './test'));
+  //describe('suite2', loadTests.bind(this, './test.alt'));
 
 });

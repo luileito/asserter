@@ -4,19 +4,31 @@
 
   // Detect env.
   var isNode = typeof module !== 'undefined' && module.exports;
+  // Create some unique string to enable syntactic sugar methods (see below).
+  // Otherwise, we couldn't compare any falsy value against a reference
+  // using the `.that()` operator because it'd be ill-defined.
+  var seed = (new Date).getTime() + Math.random();
+
   /**
    * A tiny assertion lib for both nodejs and the browser.
    * @module asserter
    * @author Luis Leiva
+   * @todo Async support.
    * @example
    * // Import asserter via require (node) or in a script tag (browser).
    * asserter.test('Equals').equals(1, 1);
    * asserter.run();
    */
   var asserter = {
+    /**
+     * Current test set. Will be empty after calling `asserter.run()`.
+     * @type {array}
+     * @memberof module:asserter
+     */
     tests: [],
-    currentTest: null,
-    negated: false,
+    _message: null,
+    _negated: false,
+    _subject: seed,
     /**
      * Define test.
      * @param {...args} args Test label, with `sprintf` capability.
@@ -25,9 +37,20 @@
      * @example asserter.test('Some label').<method>
      */
     test: function() {
-      var msg = sprintf.apply(this, [].slice.call(arguments));
-      this.currentTest = msg;
-      this.negated = false;
+      this._message = sprintf.apply(this, [].slice.call(arguments));
+      this._negated = false;
+      this._subject = seed;
+      return this;
+    },
+    /**
+     * Defines the argument to be tested.
+     * @param {mixed} arg Input value.
+     * @return {module:asserter} The asserter module.
+     * @memberof module:asserter
+     * @example asserter.test('label').that(1).equals(1);
+     */
+    that: function(arg) {
+      this._subject = arg;
       return this;
     },
     _save: function(value, operator, reference, result) {
@@ -35,9 +58,9 @@
         value: value,
         reference: reference,
         operator: operator,
-        negated: this.negated,
+        negated: this._negated,
         result: result,
-        message: this.currentTest,
+        message: this._message,
       });
       return this;
     },
@@ -47,7 +70,7 @@
       return what;
     },
     _condition: function(expr) {
-      return !this.negated ? expr : !expr;
+      return !this._negated ? expr : !expr;
     },
     /**
      * Negate current test.
@@ -56,7 +79,7 @@
      * @example asserter.test('Some label').not().<method>;
      */
     not: function() {
-      this.negated = true;
+      this._negated = true;
       return this;
     },
     /**
@@ -68,7 +91,8 @@
      * @example asserter.test('Some label').equals(arg1, arg2);
      */
     equals: function(value, reference) {
-      var val = this._get(value), ref = this._get(reference);
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : reference);
       return this._save(val, '==', ref, this._condition(val == ref));
     },
     /**
@@ -80,7 +104,8 @@
      * @example asserter.test('Some label').strictEquals(arg1, arg2);
      */
     strictEquals: function(value, reference) {
-      var val = this._get(value), ref = this._get(reference);
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : reference);
       return this._save(val, '===', ref, this._condition(val === ref));
     },
     /**
@@ -92,7 +117,8 @@
      * @example asserter.test('Some label').isGreaterThan(num1, num2);
      */
     isGreaterThan: function(value, reference) {
-      var val = this._get(value), ref = this._get(reference);
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : reference);
       return this._save(val, '>', ref, this._condition(val > ref));
     },
     /**
@@ -104,7 +130,8 @@
      * @example asserter.test('Some label').isGreaterThanOrEquals(num1, num2);
      */
     isGreaterThanOrEquals: function(value, reference) {
-      var val = this._get(value), ref = this._get(reference);
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : reference);
       return this._save(val, '>=', ref, this._condition(val >= ref));
     },
     /**
@@ -116,7 +143,8 @@
      * @example asserter.test('Some label').isLessThan(num1, num2);
      */
     isLessThan: function(value, reference) {
-      var val = this._get(value), ref = this._get(reference);
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : reference);
       return this._save(val, '<', ref, this._condition(val < ref));
     },
     /**
@@ -128,7 +156,8 @@
      * @example asserter.test('Some label').isLessThanOrEquals(num1, num2);
      */
     isLessThanOrEquals: function(value, reference) {
-      var val = this._get(value), ref = this._get(reference);
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : reference);
       return this._save(val, '<=', ref, this._condition(val <= ref));
     },
     /**
@@ -140,7 +169,8 @@
      * @example asserter.test('Some label').matches(/^B/, 'Bye');
      */
     matches: function(re, str) {
-      var val = this._get(re), ref = this._get(str);
+      var val = this._get(this._subject !== seed ? this._subject : re);
+      var ref = this._get(this._subject !== seed ? re : str);
       return this._save(val, 'matches', ref, this._condition(val.test(ref)));
     },
     /**
@@ -152,7 +182,8 @@
      * @example asserter.test('Some label').contains('Hi there', 'Hi');
      */
     contains: function(str, sub) {
-      var val = this._get(str), ref = this._get(sub);
+      var val = this._get(this._subject !== seed ? this._subject : str);
+      var ref = this._get(this._subject !== seed ? str : sub);
       return this._save(val, 'contains', ref, this._condition(val.indexOf(ref) > -1));
     },
     /**
@@ -164,12 +195,11 @@
      */
     throws: function(value) {
       try {
-        this._get(value);
-        this._save(new Error, new Error, 'throws', this._condition(false));
+        this._get(this._subject !== seed ? this._subject : value);
+        return this._save(new Error, new Error, 'throws', this._condition(false));
       } catch (err) {
-        this._save(new Error, 'success', 'throws', this._condition(true));
+        return this._save(new Error, 'success', 'throws', this._condition(true));
       }
-      return this;
     },
     /**
      * Output method.
@@ -185,7 +215,7 @@
     },
     /**
      * Output transport. Default: `console.log`.
-     * @typeof {function}
+     * @type {function}
      * @memberof module:asserter
      */
     output: console.log,
@@ -226,6 +256,12 @@
       return this;
     },
   };
+  /**
+   * Alias of {@link module:asserter.strictEquals}
+   * @function is
+   * @memberof module:asserter
+   */
+  asserter.is = asserter.strictEquals;
 
   // How is that this function is not part of the std lib?
   function sprintf() {
