@@ -200,7 +200,7 @@
     /**
      * Test if value is of given type.
      * @param {number} value Input value.
-     * @param {number} type Expected type.
+     * @param {string} type Expected type.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').hasType('Hi', 'string');
@@ -214,7 +214,7 @@
     /**
      * Test if value is an instance of given type.
      * @param {number} value Input value.
-     * @param {number} type Expected instance type.
+     * @param {string} type Expected instance type.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').inherits([], 'array');
