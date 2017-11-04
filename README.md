@@ -1,10 +1,12 @@
 # asserter
 
 A tiny assertion lib (ES5+ compliant) with zero dependencies and zero configuration.
-Written in isomorphic JavaScript (works for both NodeJS and the browser),
+Written in [isomorphic JavaScript](https://en.wikipedia.org/wiki/Isomorphic_JavaScript)
+(works for both NodeJS and the browser),
 this software is meant to run quick and dirty unit tests: just load the lib and use it!
 
-The source code is about 200 lines (fully documented), the minified version is just 3 Kb.
+The source code is about 200 lines (fully documented),
+the minified version is just 4 Kb (1 Kb if gzipped).
 
 ## Disclaimer
 
@@ -16,15 +18,20 @@ This library simply gets the job done.
 
 ## Minimal working example
 
-A test is defined as `asserter.test('label').<method>`.
+A test is defined as `asserter.test('label').<method>(arg1, arg2)`,
+or using the [alternative syntax](#alternative-syntax):
+`asserter.test('label').that(arg1).<method>(arg2)`.
+
 Once you've defined a set of tests, just call `assert.run()` to run all tests.
 
 ### In NodeJS
 
 ```js
 var asserter = require('asserter');
-asserter.test('Equals').equals(1, 2);
+asserter.test('Equals def').equals(1, 2);
+// or: asserter.test('Equals alt').that(1).equals(2);
 asserter.test('Not contains string').not().contains('Hi there', 'foo');
+// or: asserter.test('Not contains string').that('Hi there').not().contains('foo');
 asserter.run();
 ```
 
@@ -37,8 +44,10 @@ Or you can run `npm test` to see it working.
 ```html
 <script src="asserter.js"></script>
 <script>
-asserter.test('Equals').equals(1, 2);
+asserter.test('Equals def').equals(1, 2);
+// or: asserter.test('Equals alt').that(1).equals(2);
 asserter.test('Not contains string').not().contains('Hi there', 'foo');
+// or: asserter.test('Not contains string').that('Hi there').not().contains('foo');
 asserter.run();
 </script>
 ```
@@ -52,7 +61,7 @@ Or you can open `test.html` with your browser to see it working (hit `F12` to op
 * `equals(arg1, arg2)`
 Test if two arguments are equal (truthy comparison).
 
-* `strictEquals(arg1, arg2)`
+* `strictEquals(arg1, arg2)` Alias: `is(arg1, arg2)`
 Test if two arguments are equal (strict comparison).
 
 * `isGreaterThan(arg1, arg2)`
@@ -99,7 +108,7 @@ asserter
 .test('Equals undef').equals(null, undefined)
 .run('Equality tests')
 // Start another test suite.
-.test('Contains string').matches('foo', 'foo')
+.test('Contains string').matches('foo', /o+/)
 .test('Not contains string').not().contains('Hi there', 'foo')
 .run('String tests')
 ```
@@ -136,6 +145,23 @@ asserter
 .test('Function test #3').equals(function() { return 2; }, 2)
 .test('Should be undefined').equals(function() { return; }, undefined)
 .run();
+```
+
+### Alternative syntax
+
+A more convenient syntax is supported, where values and operators are explicitly declared and are thus easier to spot,
+which allows to be read e.g. as "Test that {value} is greater than {value}".
+
+```js
+asserter
+// Start test suite.
+.test('Equals 1').that(1).equals(1)
+.test('Equals undef').that(null).equals(undefined)
+.run('Equality tests')
+// Start another test suite.
+.test('Contains string').that('foo').matches(/o+/)
+.test('Not contains string').that('Hi there').not().contains('foo')
+.run('String tests')
 ```
 
 ## Documentation
