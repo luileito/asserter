@@ -22,8 +22,8 @@ asserter
 // String comparisons.
 .test('Contains string').contains('Hi there', 'Hi')
 .test('Not contains string').not().contains('Hi there', 'foo')
-.test('Matches regexp').matches(/^B/, 'Bye')
-.test('Not matches regexp').not().matches(/^Z/, 'Bye')
+.test('Matches regexp').matches('Bye', /^B/)
+.test('Not matches regexp').not().matches('Bye', /^Z/)
 // Error comparisons.
 .test('Throws error').throws(function() { throw new Error; })
 .test('Not throws error').not().throws(true)

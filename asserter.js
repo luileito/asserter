@@ -161,17 +161,17 @@
       return this._save(val, '<=', ref, this._condition(val <= ref));
     },
     /**
-     * Test if regexp applies to string.
-     * @param {RegExp} re Regular expression.
+     * Test if string matches regular expression.
      * @param {string} str String to test the regular expression.
+     * @param {RegExp} re Regular expression.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').matches(/^B/, 'Bye');
      */
-    matches: function(re, str) {
-      var val = this._get(this._subject !== seed ? this._subject : re);
-      var ref = this._get(this._subject !== seed ? re : str);
-      return this._save(val, 'matches', ref, this._condition(val.test(ref)));
+    matches: function(str, re) {
+      var val = this._get(this._subject !== seed ? this._subject : str);
+      var ref = this._get(this._subject !== seed ? str : re);
+      return this._save(val, 'matches', ref, this._condition(val.match(ref)));
     },
     /**
      * Test if string contains substring.
