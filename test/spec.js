@@ -2,29 +2,22 @@ describe('asserter', function() {
 
   var hasFailed = (test) => !test.result;
 
-  var loadTests = function(module) {
-    var asserter = require('../asserter');
-    // Suppress output.
-    asserter.output = () => {};
+  var loadSuite = function(module) {
+    var asserter;
 
-    var testSuite = require(module);
-
-    beforeEach(function() {
-      testSuite.run('BEGIN');
+    beforeAll(function() {
+      asserter = require(module);
+      // Suppress output.
+      asserter.output = () => {};
     });
 
     afterAll(function() {
-      testSuite.run('END');
+      asserter.run();
     });
 
     it('should pass default tests', function() {
       // Inspect default tests.
-      expect(testSuite.tests.every(hasFailed)).toBe(false);
-    });
-
-    it('should clean tests after run', function() {
-      testSuite.run();
-      expect(testSuite.tests.length).toBe(0);
+      expect(asserter.tests.every(hasFailed)).toBe(false);
     });
 
     it('should fail test', function() {
@@ -32,9 +25,14 @@ describe('asserter', function() {
       asserter.test('Equals').equals(1, 2);
       expect(asserter.tests.some(hasFailed)).toBe(true);
     });
+
+    it('should clean tests after run', function() {
+      asserter.run();
+      expect(asserter.tests.length).toBe(0);
+    });
   }
 
-  describe('suite1', loadTests.bind(this, './test'));
-  //describe('suite2', loadTests.bind(this, './test.alt'));
+  describe('suite1', loadSuite.bind(this, './test'));
+  describe('suite2', loadSuite.bind(this, './test.alt'));
 
 });
