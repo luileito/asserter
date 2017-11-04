@@ -59,34 +59,53 @@ Or you can open `test.html` with your browser to see it working (hit `F12` to op
 ## Supported tests
 
 * `equals(arg1, arg2)`
+
 Test if two arguments are equal (truthy comparison).
 
-* `strictEquals(arg1, arg2)` Alias: `is(arg1, arg2)`
+* `strictEquals(arg1, arg2)` or `is(arg1, arg2)`
+
 Test if two arguments are equal (strict comparison).
 
 * `isGreaterThan(arg1, arg2)`
+
 Test if `arg1` is greater than `arg2`.
 
 * `isGreaterThanOrEquals(arg1, arg2)`
+
 Test if `arg1` is greater than or equal `arg2`.
 
 * `isLessThan(arg1, arg2)`
+
 Test if `arg1` is less than `arg2`.
 
 * `isLessThanOrEquals(arg1, arg2)`
+
 Test if `arg1` is less than or equal `arg2`.
 
-* `matches(re, str)`
-Test if regular expression `re` applies to string `str`.
+* `matches(str, re)`
+
+Test if string `str` matches regular expression `re`.
 
 * `contains(str, sub)`
+
 Test if string `str` contains string `sub`.
 
+* `hasType(arg, type)`
+
+Test if `arg` is of type `type`.
+
+* `inherits(arg, type)`
+
+Test if `arg` is an instance of `type`.
+
 * `throws(arg)`
+
 Test if `arg` throws an error.
 
 * `not()`
-This will negate the current test result. See examples above or below.
+
+This will negate the current test result.
+See examples above or below.
 
 ## Features
 
@@ -123,21 +142,23 @@ asserter
 
 ### Method arguments can be anything
 
-If you pass in *arrays*, they will be casted to strings; e.g., `[1,2]` becomes `'1,2'`.
+If you pass in *arrays*, they will be casted to strings when testing equality; e.g., `[1,2]` becomes `'1,2'`.
 ```js
 asserter
 .test('Array test').equals([1,2], [1,2])
 .run();
 ```
 
-If you pass in *objects*, they will be casted to JSON; e.g., `{foo:1}` becomes `'{"foo":1}'`.
+If you pass in *objects*, they will be casted to JSON when testing equality; e.g., `{foo:1}` becomes `'{"foo":1}'`.
 ```js
 asserter
 .test('Object test').equals({foo:1}, {foo:1})
 .run();
 ```
 
-If you pass in *functions*, their return values will be tested.
+**Note:** This casting is not performed when testing for *strict* equality.
+
+Finally, if you pass in *functions*, their return values will be tested in any case.
 ```js
 asserter
 .test('Function test #1').equals(function() { return 2; }, function() { return 2; })

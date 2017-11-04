@@ -1,6 +1,7 @@
 .*
 *~
 *.min.*
+*.gz
 coverage
 node_modules
 local
