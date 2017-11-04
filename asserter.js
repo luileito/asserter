@@ -34,7 +34,8 @@
      * @param {...args} args Test label, with `sprintf` capability.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').<method>
+     * @example asserter.test('Some label').<method>(arg1, arg2)
+     * @example asserter.test('Some label').that(arg1).<method>(arg2);
      */
     test: function() {
       this._message = sprintf.apply(this, [].slice.call(arguments));
@@ -66,7 +67,6 @@
     },
     _get: function(what) {
       if (typeof what === 'function') what = what();
-      if (what && typeof what === 'object' && !(what instanceof RegExp)) what = JSON.stringify(what);
       return what;
     },
     _condition: function(expr) {
@@ -88,11 +88,14 @@
      * @param {mixed} reference Expected value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').equals(arg1, arg2);
+     * @example asserter.test('Some label').equals(1, '1');
+     * @example asserter.test('Some label').that(1).equals('1');
      */
     equals: function(value, reference) {
       var val = this._get(this._subject !== seed ? this._subject : value);
       var ref = this._get(this._subject !== seed ? value : reference);
+      if (val && typeof val === 'object') val = JSON.stringify(val);
+      if (ref && typeof ref === 'object') ref = JSON.stringify(ref);
       return this._save(val, '==', ref, this._condition(val == ref));
     },
     /**
@@ -101,7 +104,9 @@
      * @param {mixed} reference Expected value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').strictEquals(arg1, arg2);
+     * @example asserter.test('Some label').strictEquals(1, 1);
+     * @example asserter.test('Some label').is(1, 1);
+     * @example asserter.test('Some label').that(1).is(1);
      */
     strictEquals: function(value, reference) {
       var val = this._get(this._subject !== seed ? this._subject : value);
@@ -114,7 +119,8 @@
      * @param {number} reference Expected value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').isGreaterThan(num1, num2);
+     * @example asserter.test('Some label').isGreaterThan(2, 1);
+     * @example asserter.test('Some label').that(2).isGreaterThan(1);
      */
     isGreaterThan: function(value, reference) {
       var val = this._get(this._subject !== seed ? this._subject : value);
@@ -127,7 +133,8 @@
      * @param {number} reference Expected value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').isGreaterThanOrEquals(num1, num2);
+     * @example asserter.test('Some label').isGreaterThanOrEquals(2, 1);
+     * @example asserter.test('Some label').that(2).isGreaterThanOrEquals(1);
      */
     isGreaterThanOrEquals: function(value, reference) {
       var val = this._get(this._subject !== seed ? this._subject : value);
@@ -140,7 +147,8 @@
      * @param {number} reference Expected value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').isLessThan(num1, num2);
+     * @example asserter.test('Some label').isLessThan(1, 2);
+     * @example asserter.test('Some label').that(1).isLessThan(2);
      */
     isLessThan: function(value, reference) {
       var val = this._get(this._subject !== seed ? this._subject : value);
@@ -153,7 +161,8 @@
      * @param {number} reference Expected value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').isLessThanOrEquals(num1, num2);
+     * @example asserter.test('Some label').isLessThanOrEquals(1, 2);
+     * @example asserter.test('Some label').that(1).isLessThanOrEquals(2);
      */
     isLessThanOrEquals: function(value, reference) {
       var val = this._get(this._subject !== seed ? this._subject : value);
@@ -166,7 +175,8 @@
      * @param {RegExp} re Regular expression.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
-     * @example asserter.test('Some label').matches(/^B/, 'Bye');
+     * @example asserter.test('Some label').matches('Bye', /^B/);
+     * @example asserter.test('Some label').that('Bye').matches(/^B/);
      */
     matches: function(str, re) {
       var val = this._get(this._subject !== seed ? this._subject : str);
@@ -180,6 +190,7 @@
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').contains('Hi there', 'Hi');
+     * @example asserter.test('Some label').that('Hi there').contains('Hi');
      */
     contains: function(str, sub) {
       var val = this._get(this._subject !== seed ? this._subject : str);
@@ -187,11 +198,40 @@
       return this._save(val, 'contains', ref, this._condition(val.indexOf(ref) > -1));
     },
     /**
+     * Test if value is of given type.
+     * @param {number} value Input value.
+     * @param {number} type Expected type.
+     * @return {module:asserter} The asserter module.
+     * @memberof module:asserter
+     * @example asserter.test('Some label').hasType('Hi', 'string');
+     * @example asserter.test('Some label').that('Hi').hasType('string');
+     */
+    hasType: function(value, type) {
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : type);
+      return this._save(val, 'hasType', ref, this._condition(typeof val === ref.toLowerCase()));
+    },
+    /**
+     * Test if value is an instance of given type.
+     * @param {number} value Input value.
+     * @param {number} type Expected instance type.
+     * @return {module:asserter} The asserter module.
+     * @memberof module:asserter
+     * @example asserter.test('Some label').inherits([], 'array');
+     * @example asserter.test('Some label').that([]).inherits('array');
+     */
+    inherits: function(value, type) {
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      var ref = this._get(this._subject !== seed ? value : type);
+      return this._save(val, 'inherits', ref, this._condition(val.constructor.name.toLowerCase() === ref.toLowerCase()));
+    },
+    /**
      * Test if an error is thrown.
      * @param {mixed} value Input value.
      * @return {module:asserter} The asserter module.
      * @memberof module:asserter
      * @example asserter.test('Some label').throws(function() { throw new Error; });
+     * @example asserter.test('Some label').that(function() { throw new Error; }).throws();
      */
     throws: function(value) {
       try {

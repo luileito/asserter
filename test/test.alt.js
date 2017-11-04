@@ -2,10 +2,18 @@ var asserter = require('../asserter');
 
 asserter
 // Basic comparisons.
-.test('Equals').that(1).equals(true)
+.test('Equals truthy').that(1).equals(true)
+.test('Equals falsy').that(0).equals(false)
+.test('Equals undef').that(null).equals(undefined)
+.test('Equals arr').that([]).equals([])
+.test('Equals obj').that({}).equals({})
 .test('Not equals').that(1).not().equals(false)
-.test('Strict equals').that(1).is(1)
-.test('Not strict equals').that(1).not().is('1')
+.test('Strict equals num').that(1).is(1)
+.test('Strict equals bool').that(true).is(true)
+.test('Not strict equals num').that(1).not().is('1')
+.test('Not strict equals arr').that([]).not().is([])
+.test('Not strict equals obj').that({}).not().is({})
+.test('Not strict equals falsy').that(null).not().is(undefined)
 // Watch out: objects will be compared as strings.
 .test('Array equals').that([1,2]).equals([1,2])
 .test('Object equals').that({foo:1}).equals({foo:1})
@@ -27,6 +35,9 @@ asserter
 // Error comparisons.
 .test('Throws error').that(function() { throw new Error; }).throws()
 .test('Not throws error').that(true).not().throws()
+// Misc.
+.test('Has type').that('Hi').hasType('string')
+.test('Inherits').that([]).inherits('array')
 ;
 
 // Export this suite for unit testing & coverage tests.
