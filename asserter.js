@@ -236,9 +236,9 @@
     throws: function(value) {
       try {
         this._get(this._subject !== seed ? this._subject : value);
-        return this._save(new Error, new Error, 'throws', this._condition(false));
+        return this._save(new Error, 'throws', 'something', this._condition(false));
       } catch (err) {
-        return this._save(new Error, 'success', 'throws', this._condition(true));
+        return this._save(new Error, 'throws', 'something', this._condition(true));
       }
     },
     /**
