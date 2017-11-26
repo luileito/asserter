@@ -226,6 +226,18 @@
       return this._save(val, 'inherits', ref, this._condition(val.constructor.name.toLowerCase() === ref.toLowerCase()));
     },
     /**
+     * Test if value is defined (truthy comparison).
+     * @param {mixed} value Input value.
+     * @return {module:asserter} The asserter module.
+     * @memberof module:asserter
+     * @example asserter.test('Some label').exists(window.navigator);
+     * @example asserter.test('Some label').that(window.navigator).exists();
+     */
+    exists: function(value) {
+      var val = this._get(this._subject !== seed ? this._subject : value);
+      return this._save(val, 'is', 'truthy', this._condition(val));
+    },
+    /**
      * Test if an error is thrown.
      * @param {mixed} value Input value.
      * @return {module:asserter} The asserter module.
