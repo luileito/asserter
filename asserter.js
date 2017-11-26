@@ -266,6 +266,17 @@
       return this;
     },
     /**
+     * Inserts a newline.
+     * Useful to delimit better multiple test suites altogether.
+     * @method
+     * @return {module:asserter} The asserter module.
+     * @memberof module:asserter
+     */
+    end: function() {
+      // In the browser we need to add an explicit newline char.
+      return this.display(isNode ? '' : '\n');
+    },
+    /**
      * Output transport. Default: `console.log`.
      * @type {function}
      * @memberof module:asserter
@@ -302,7 +313,7 @@
         }
         this.display('[%s] %s', label, test.message);
       }, this);
-      this.display('%s/%s tests passed (%s errors).\n', successes, successes + errors, errors);
+      this.display('%s/%s tests passed (%s errors).', successes, successes + errors, errors).end();
       // Reset state.
       this.tests = [];
       return this;
