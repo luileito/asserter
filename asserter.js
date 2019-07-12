@@ -313,7 +313,7 @@
         }
         this.display('[%s] %s', label, test.message);
       }, this);
-      this.display('%s/%s tests passed (%s errors).', successes, successes + errors, errors).end();
+      this.display('%s/%s tests passed (%s errors)', successes, successes + errors, errors).end();
       // Reset state.
       this.tests = [];
       return this;
